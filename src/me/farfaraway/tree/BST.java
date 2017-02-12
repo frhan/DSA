@@ -50,7 +50,7 @@ public class BST {
     }
 
     public void delete(final int key){
-
+        delete(root,key);
     }
 
     public void show(){
@@ -64,5 +64,40 @@ public class BST {
         show(root.left);
         System.out.print(root.key+" ");
         show(root.right);
+    }
+
+    private BinaryNode predecessor(BinaryNode node){
+        BinaryNode currentNode = node;
+        while (currentNode != null){
+            currentNode = currentNode.right;
+        }
+        return currentNode;
+    }
+
+    private void delete(BinaryNode root,int key){
+        BinaryNode node = search(root,key);
+
+        if (node.left == null && node.right == null){
+            node = null;
+            return;
+        }
+
+        if (node.left == null){
+            BinaryNode temp = node;
+            node = node.right;
+            temp = null;
+            return;
+        }
+
+        if (node.right == null){
+            BinaryNode temp = node;
+            node = node.left;
+            temp = null;
+            return;
+        }
+
+        BinaryNode predecessor = predecessor(node);
+        node.key = predecessor.key;
+        delete(node.right,key);
     }
 }
